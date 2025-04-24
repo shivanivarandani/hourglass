@@ -15,8 +15,7 @@ class MainScene extends ENABLE3D.Scene3D {
           // Load a GLTF model
   this.load.gltf('./assets/hourglass.glb').then(gltf => {
     this.scene.add(gltf.scene)
-    gltf.scene.position.set(0, 1, 0)
-
+    
     const doodats = this.scene.getObjectByName('doodats')
 
     if (doodats) {
@@ -30,32 +29,42 @@ class MainScene extends ENABLE3D.Scene3D {
       })
     }
 
-    
-    const colliderNames = ['glass', 'top_bottom']
+    const top = this.scene.getObjectByName("top1")
+    const bottom = this.scene.getObjectByName("bottom")
+    const glass = this.scene.getObjectByName("glass")
 
-    colliderNames.forEach(name => {
-      const obj = this.scene.getObjectByName(name)
-      if (obj) {
-        obj.traverse(child => {
-          if (child.isMesh) {
-            this.physics.add.existing(child, {
-              shape: 'box',
-              mass: 0
-            })
-          }
-        })
-      }
+    this.physics.add.existing(top, {
+      shape: 'convex', // or 'convex' or 'mesh' depending on your need
+      collisionFlags:1
+    })
+    this.physics.add.existing(bottom, {
+      shape: 'convex', // or 'convex' or 'mesh' depending on your need
+      collisionFlags:1
+    })
+    this.physics.add.existing(glass, {
+      shape: 'concave', // or 'convex' or 'mesh' depending on your need
+      collisionFlags:1
+    })
+
+
     
 
   })
+  
 
-})
+
 
 
       this.warpSpeed()
       //this.physics.debug.enable()
-  
-      this.camera.position.set(1, 2, 2)
+
+      this.camera.lookAt(0,2,0)
+        
+      this.camera.position.set(1, 1, 1)
+
+      
+
+
   
       //this.add.box({ y: 2 }, { lambert: { color: 'skyblue' } })
       //this.physics.add.box({ y: 10 }, { lambert: { color: 'hotpink' } })
@@ -64,10 +73,7 @@ class MainScene extends ENABLE3D.Scene3D {
     }
   
     update() {
-      if (this.box) {
-        this.box.rotation.x += 0.01
-        this.box.rotation.y += 0.01
-      }
+
     }
   }
   
